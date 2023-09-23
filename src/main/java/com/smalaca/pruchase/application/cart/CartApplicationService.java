@@ -23,5 +23,8 @@ class CartApplicationService {
     }
 
     void addProduct(AddProductCommand command) {
+        Cart cart = cartRepository.find(command.buyerId());
+
+        cartRepository.save(cart);
     }
 }
