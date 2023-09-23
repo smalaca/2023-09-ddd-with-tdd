@@ -39,6 +39,18 @@ public class CartApplicationServiceTest {
     }
 
     @Test
+    void shouldRecognizeProductIsNotInTheCartWhenChoosingProducts() {
+        UUID buyerId = randomBuyerId();
+        Map<UUID, Integer> products = ImmutableMap.of(randomProductId(), 13);
+        givenExistingCartWith(buyerId, ImmutableMap.of(randomProductId(), 10));
+
+        Executable executable = () -> service.chooseProducts(new ChooseProductsCommand(buyerId, products));
+
+        RuntimeException actual = assertThrows(RuntimeException.class, executable);
+        Assertions.assertThat(actual).hasMessage("Not all product could be found.");
+    }
+
+    @Test
     void shouldChooseProductsFromCart() {
         UUID buyerId = randomBuyerId();
         UUID productIdOne = randomProductId();
