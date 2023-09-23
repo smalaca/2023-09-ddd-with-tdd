@@ -19,6 +19,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class AssortmentApplicationServiceTest {
     private static final Faker FAKER = new Faker();
+    private static final boolean VALID = true;
+    private static final boolean INVALID = false;
 
     private final AssortmentRepository assortmentRepository = Mockito.mock(AssortmentRepository.class);
     private final ProductValidationService productValidationService = Mockito.mock(ProductValidationService.class);
@@ -40,6 +42,20 @@ class AssortmentApplicationServiceTest {
     }
 
     @Test
+    void shouldRecognizeProductIsInvalid() {
+        UUID sellerId = randomSellerId();
+        String productCode = givenInvalidProductCode();
+        String productName = randomProductName();
+        AddProductCommand command = new AddProductCommand(sellerId, productCode, productName, 13);
+        givenExistingAssortmentFor(sellerId);
+
+        Executable actual = () -> service.addProduct(command);
+
+        RuntimeException actualException = assertThrows(RuntimeException.class, actual);
+        Assertions.assertThat(actualException).hasMessage("Product: " + productCode + " cannot be added.");
+    }
+
+    @Test
     void shouldAddProductToAssortment() {
         UUID sellerId = randomSellerId();
         String productCode = givenValidProductCode();
@@ -55,8 +71,16 @@ class AssortmentApplicationServiceTest {
     }
 
     private String givenValidProductCode() {
+        return givenProductCode(VALID);
+    }
+
+    private String givenInvalidProductCode() {
+        return givenProductCode(INVALID);
+    }
+
+    private String givenProductCode(boolean isValid) {
         String productCode = randomProductCode();
-        BDDMockito.given(productValidationService.isValid(productCode)).willReturn(true);
+        BDDMockito.given(productValidationService.isValid(productCode)).willReturn(isValid);
         return productCode;
     }
 
