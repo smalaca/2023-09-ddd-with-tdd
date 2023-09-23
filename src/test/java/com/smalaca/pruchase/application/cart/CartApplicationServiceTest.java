@@ -3,6 +3,7 @@ package com.smalaca.pruchase.application.cart;
 import com.google.common.collect.ImmutableMap;
 import com.smalaca.pruchase.domain.cart.Cart;
 import com.smalaca.pruchase.domain.cart.CartRepository;
+import com.smalaca.pruchase.domain.cart.CartTestFactory;
 import com.smalaca.pruchase.domain.order.Order;
 import com.smalaca.pruchase.domain.order.OrderAssertion;
 import com.smalaca.pruchase.domain.order.OrderRepository;
@@ -23,12 +24,13 @@ public class CartApplicationServiceTest {
     private final CartRepository cartRepository = Mockito.mock(CartRepository.class);
     private final OrderRepository orderRepository = Mockito.mock(OrderRepository.class);
     private final CartApplicationService service = new CartApplicationService(cartRepository, orderRepository);
+    private final CartTestFactory cartTestFactory = new CartTestFactory();
 
     @Test
     void shouldRecognizeTheAmountOfProductIsNotGreaterThanZeroWhenChoosingProducts() {
         UUID buyerId = randomBuyerId();
         Map<UUID, Integer> products = ImmutableMap.of(randomProductId(), -42);
-        givenExistingCart(buyerId);
+        givenExistingCartWith(buyerId, products);
 
         Executable executable = () -> service.chooseProducts(new ChooseProductsCommand(buyerId, products));
 
@@ -47,7 +49,7 @@ public class CartApplicationServiceTest {
                 productIdTwo, 5,
                 productIdThree, 3
         );
-        givenExistingCart(buyerId);
+        givenExistingCartWith(buyerId, products);
 
         service.chooseProducts(new ChooseProductsCommand(buyerId, products));
 
@@ -85,8 +87,12 @@ public class CartApplicationServiceTest {
         BDDMockito.then(cartRepository).should().save(any(Cart.class));
     }
 
+    private void givenExistingCartWith(UUID buyerId, Map<UUID, Integer> products) {
+        BDDMockito.given(cartRepository.find(buyerId)).willReturn(cartTestFactory.create(products));
+    }
+
     private void givenExistingCart(UUID buyerId) {
-        BDDMockito.given(cartRepository.find(buyerId)).willReturn(new Cart());
+        BDDMockito.given(cartRepository.find(buyerId)).willReturn(cartTestFactory.create());
     }
 
     private UUID randomProductId() {

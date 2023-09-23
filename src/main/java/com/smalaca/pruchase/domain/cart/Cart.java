@@ -7,6 +7,12 @@ import java.util.UUID;
 
 // Aggregate Root
 public class Cart {
+    private final Map<UUID, Integer> products;
+
+    Cart(Map<UUID, Integer> products) {
+        this.products = products;
+    }
+
     public Order chooseProducts(Map<UUID, Integer> products) {
         Order.Builder builder = new Order.Builder();
 
