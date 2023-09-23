@@ -7,15 +7,15 @@ import lombok.EqualsAndHashCode;
 class Product {
     private final String code;
     private final String name;
-    private final int price;
+    private final Price price;
 
-    private Product(String productCode, String productName, int price) {
+    private Product(String productCode, String productName, Price price) {
         code = productCode;
         name = productName;
         this.price = price;
     }
 
     static Product product(String productCode, String productName, int price) {
-        return new Product(productCode, productName, price);
+        return new Product(productCode, productName, Price.price(price));
     }
 }
