@@ -27,4 +27,8 @@ class CartApplicationService {
 
         cartRepository.save(cart);
     }
+
+    void removeProduct(RemoveProductCommand command) {
+
+    }
 }

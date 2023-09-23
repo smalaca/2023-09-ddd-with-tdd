@@ -44,6 +44,16 @@ public class CartApplicationServiceTest {
         BDDMockito.then(cartRepository).should().save(any(Cart.class));
     }
 
+    @Test
+    void shouldRemoveProductFromCart() {
+        UUID buyerId = randomBuyerId();
+        givenExistingCart(buyerId);
+
+        service.removeProduct(new RemoveProductCommand(buyerId, randomProductId(), 42));
+
+        BDDMockito.then(cartRepository).should().save(any(Cart.class));
+    }
+
     private void givenExistingCart(UUID buyerId) {
         BDDMockito.given(cartRepository.find(buyerId)).willReturn(new Cart());
     }
