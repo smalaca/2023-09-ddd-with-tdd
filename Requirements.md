@@ -24,6 +24,7 @@
         - Ilość - musi być większa od zera
         - Wybrane Produkty były obecne w koszyku
     - Numer Zamówienia = String
+    - Rezerwacja produktów (Kod Produktu + Ilość) -> ProductManagementService
 
 3. Dodawanie produktów do Koszyka
     Zmienia się: Koszyk
@@ -39,3 +40,4 @@
     - Id Kupującego -> Koszyk
     Dane:
     - Kod Produktu - Produkt musi istnieć w koszyku
+    - Produkt Musi istnieje (Kod Produktu) -> ProductManagementService
