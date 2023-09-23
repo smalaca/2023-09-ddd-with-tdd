@@ -14,10 +14,25 @@ public class Cart {
     }
 
     public Order chooseProducts(Map<UUID, Integer> products) {
-        Order.Builder builder = new Order.Builder();
+        if (isAnyNotPresent(products)) {
+            throw new ProductException();
+        }
 
+        Order.Builder builder = new Order.Builder();
         products.forEach(builder::addProduct);
 
         return builder.build();
+    }
+
+    private boolean isAnyNotPresent(Map<UUID, Integer> products) {
+        return products.entrySet()
+                .stream()
+                .anyMatch(product -> isNotPresent(product.getKey()));
+    }
+
+    private boolean isNotPresent(UUID productId) {
+        return products.entrySet()
+                .stream()
+                .noneMatch(product -> product.getKey().equals(productId));
     }
 }
