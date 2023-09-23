@@ -13,7 +13,7 @@ public class Assortment {
         this.sellerId = sellerId;
     }
 
-    public void addProduct(String code, String name, int price) {
-        products.add(Product.product(code, name, price));
+    public void addProduct(AddProductDto dto) {
+        products.add(Product.product(dto.code(), dto.name(), dto.price()));
     }
 }

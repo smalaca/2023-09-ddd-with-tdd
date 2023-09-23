@@ -1,5 +1,6 @@
 package com.smalaca.productmanagement.application.assortment;
 
+import com.smalaca.productmanagement.domain.assortment.AddProductDto;
 import com.smalaca.productmanagement.domain.assortment.Assortment;
 import com.smalaca.productmanagement.domain.assortment.AssortmentRepository;
 
@@ -17,7 +18,7 @@ class AssortmentApplicationService {
         Assortment assortment = assortmentRepository.find(command.sellerId());
 
         // wywołanie metody na domenie - 1
-        assortment.addProduct(command.productCode(), command.productName(), command.price());
+        assortment.addProduct(new AddProductDto(command.productCode(), command.productName(), command.price()));
 
         // zapis zmian -> 1 ... *
         assortmentRepository.save(assortment);
