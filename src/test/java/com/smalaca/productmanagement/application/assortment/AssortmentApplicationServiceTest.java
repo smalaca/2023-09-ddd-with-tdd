@@ -10,16 +10,16 @@ import org.mockito.Mockito;
 import java.util.UUID;
 
 class AssortmentApplicationServiceTest {
+    private final AssortmentRepository assortmentRepository = Mockito.mock(AssortmentRepository.class);
+    private final AssortmentApplicationService service = new AssortmentApplicationService(assortmentRepository);
 
     @Test
     void shouldAddProductToAssortment() {
-        AssortmentRepository assortmentRepository = Mockito.mock(AssortmentRepository.class);
-        AssortmentApplicationService service = new AssortmentApplicationService(assortmentRepository);
         UUID sellerId = UUID.randomUUID();
         String productCode = new Faker().lorem().word();
         String productName = new Faker().lorem().word();
         AddProductCommand command = new AddProductCommand(sellerId, productCode, productName);
-        Assortment assortment = givenExistingAssortmentFor(assortmentRepository, sellerId);
+        Assortment assortment = givenExistingAssortmentFor(sellerId);
 
         service.addProduct(command);
 
@@ -27,7 +27,7 @@ class AssortmentApplicationServiceTest {
         // sprawdź czy produkt dodany
     }
 
-    private Assortment givenExistingAssortmentFor(AssortmentRepository assortmentRepository, UUID sellerId) {
+    private Assortment givenExistingAssortmentFor(UUID sellerId) {
         Assortment assortment = new Assortment();
         BDDMockito.given(assortmentRepository.find(sellerId)).willReturn(assortment);
         return assortment;
