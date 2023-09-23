@@ -31,8 +31,7 @@ class AssortmentApplicationServiceTest {
 
         assertAssertion(thenAssortmentSaved())
                 .hasSellerId(sellerId)
-//                .containsProduct(productCode, productName)
-        ;
+                .containsProduct(productCode, productName);
     }
 
     private Assortment thenAssortmentSaved() {
