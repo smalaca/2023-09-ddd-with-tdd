@@ -14,7 +14,7 @@ class Price {
     // Factory
     static Price price(int value) {
         if (value < 1) {
-            throw new PriceException();
+            throw new PriceException(value);
         }
         return new Price(value);
     }
