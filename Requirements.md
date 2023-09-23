@@ -20,6 +20,8 @@
     - Id Kupującego -> Koszyk
     Dane:
     - Wybrane Produkty: Kod Produktu + Ilość
+        - Ilość - musi być większa od zera
+        - Wybrane Produkty były obecne w koszyku
     - Numer Zamówienia = String
 
 3. Dodawanie produktów do Koszyka
@@ -28,7 +30,7 @@
     - Id Kupującego -> Koszyk
     Dane:
     - Kod Produktu
-    - Ilość
+    - Ilość - musi być większa od zera
 
 4. Usuwanie produktów z Koszyka
     Zmienia się: Koszyk
