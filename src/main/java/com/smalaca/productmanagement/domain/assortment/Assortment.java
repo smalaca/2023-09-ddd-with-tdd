@@ -6,7 +6,7 @@ import java.util.UUID;
 public class Assortment {
     private final UUID sellerId;
 
-    public Assortment(UUID sellerId) {
+    Assortment(UUID sellerId) {
         this.sellerId = sellerId;
     }
 }
