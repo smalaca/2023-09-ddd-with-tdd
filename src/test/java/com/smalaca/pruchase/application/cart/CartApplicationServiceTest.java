@@ -27,10 +27,9 @@ public class CartApplicationServiceTest {
                 randomProductId(), 5,
                 randomProductId(), 3
         );
-        ChooseProductsCommand command = new ChooseProductsCommand(buyerId, products);
         givenExistingCart(buyerId);
 
-        service.chooseProducts(command);
+        service.chooseProducts(new ChooseProductsCommand(buyerId, products));
 
         BDDMockito.then(orderRepository).should().save(any(Order.class));
     }
