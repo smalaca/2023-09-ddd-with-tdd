@@ -17,16 +17,26 @@ class AssortmentApplicationServiceTest {
 
     @Test
     void shouldAddProductToAssortment() {
-        UUID sellerId = UUID.randomUUID();
-        String productCode = FAKER.lorem().word();
-        String productName = FAKER.lorem().word();
-        AddProductCommand command = new AddProductCommand(sellerId, productCode, productName);
+        UUID sellerId = randomSellerId();
+        AddProductCommand command = new AddProductCommand(sellerId, randomProductCode(), randomProductName());
         Assortment assortment = givenExistingAssortmentFor(sellerId);
 
         service.addProduct(command);
 
         BDDMockito.then(assortmentRepository).should().save(assortment);
         // sprawdź czy produkt dodany
+    }
+
+    private String randomProductName() {
+        return FAKER.lorem().word();
+    }
+
+    private String randomProductCode() {
+        return FAKER.lorem().word();
+    }
+
+    private UUID randomSellerId() {
+        return UUID.randomUUID();
     }
 
     private Assortment givenExistingAssortmentFor(UUID sellerId) {
