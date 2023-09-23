@@ -3,6 +3,7 @@ package com.smalaca.pruchase.application.cart;
 import com.google.common.collect.ImmutableMap;
 import com.smalaca.pruchase.domain.cart.Cart;
 import com.smalaca.pruchase.domain.cart.CartRepository;
+import com.smalaca.pruchase.domain.cart.OrderAssertion;
 import com.smalaca.pruchase.domain.order.Order;
 import com.smalaca.pruchase.domain.order.OrderRepository;
 import org.junit.jupiter.api.Test;
@@ -32,7 +33,8 @@ public class CartApplicationServiceTest {
 
         service.chooseProducts(new ChooseProductsCommand(buyerId, products));
 
-        thenOrderSaved();
+        OrderAssertion.assertOder(thenOrderSaved())
+                .hasOrderNumber();
     }
 
     private Order thenOrderSaved() {
