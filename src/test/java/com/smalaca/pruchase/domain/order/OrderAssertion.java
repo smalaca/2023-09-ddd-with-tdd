@@ -32,7 +32,7 @@ public class OrderAssertion {
     public OrderAssertion containsProduct(UUID expectedProductId, int expectedProductAmount) {
         Assertions.assertThat(actual).extracting("items").satisfies(actualItems -> {
             List actualItemsList = (List) actualItems;
-            Assertions.assertThat(actualItemsList).contains(new OrderItem(expectedProductId, expectedProductAmount));
+            Assertions.assertThat(actualItemsList).contains(OrderItem.create(expectedProductId, expectedProductAmount));
         });
         return this;
     }

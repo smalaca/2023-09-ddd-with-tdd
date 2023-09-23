@@ -14,4 +14,8 @@ class OrderItem {
         this.productId = productId;
         this.productAmount = productAmount;
     }
+
+    static OrderItem create(UUID productId, int amount) {
+        return new OrderItem(productId, amount);
+    }
 }
