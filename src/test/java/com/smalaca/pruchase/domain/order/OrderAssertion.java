@@ -1,6 +1,5 @@
-package com.smalaca.pruchase.domain.cart;
+package com.smalaca.pruchase.domain.order;
 
-import com.smalaca.pruchase.domain.order.Order;
 import org.assertj.core.api.Assertions;
 
 import java.util.List;

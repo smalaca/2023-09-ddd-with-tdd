@@ -17,7 +17,7 @@ class CartApplicationService {
     void chooseProducts(ChooseProductsCommand command) {
         Cart cart = cartRepository.find(command.buyerId());
 
-        Order order = cart.chooseProducts();
+        Order order = cart.chooseProducts(command.products());
 
         orderRepository.save(order);
     }
