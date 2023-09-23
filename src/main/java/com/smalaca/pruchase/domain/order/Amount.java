@@ -13,6 +13,9 @@ class Amount {
 
     // Factory
     static Amount amount(Integer value) {
+        if (value < 1) {
+            throw new AmountException();
+        }
         return new Amount(value);
     }
 }
