@@ -53,6 +53,6 @@ class AssortmentApplicationServiceTest {
     }
 
     private void givenExistingAssortmentFor(UUID sellerId) {
-        BDDMockito.given(assortmentRepository.find(sellerId)).willReturn(new Assortment());
+        BDDMockito.given(assortmentRepository.find(sellerId)).willReturn(new Assortment(sellerId));
     }
 }
