@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableMap;
 import com.smalaca.pruchase.domain.cart.Cart;
 import com.smalaca.pruchase.domain.cart.CartRepository;
 import com.smalaca.pruchase.domain.cart.CartTestFactory;
+import com.smalaca.pruchase.domain.cart.ProductManagementService;
 import com.smalaca.pruchase.domain.order.Order;
 import com.smalaca.pruchase.domain.order.OrderAssertion;
 import com.smalaca.pruchase.domain.order.OrderRepository;
@@ -23,7 +24,8 @@ import static org.mockito.ArgumentMatchers.any;
 public class CartApplicationServiceTest {
     private final CartRepository cartRepository = Mockito.mock(CartRepository.class);
     private final OrderRepository orderRepository = Mockito.mock(OrderRepository.class);
-    private final CartApplicationService service = new CartApplicationService(cartRepository, orderRepository);
+    private final ProductManagementService productManagementService = Mockito.mock(ProductManagementService.class);
+    private final CartApplicationService service = new CartApplicationService(cartRepository, orderRepository, productManagementService);
     private final CartTestFactory cartTestFactory = new CartTestFactory();
 
     @Test
@@ -61,6 +63,9 @@ public class CartApplicationServiceTest {
                 productIdTwo, 5,
                 productIdThree, 3
         );
+        givenAvailableProduct(productIdOne, 1);
+        givenAvailableProduct(productIdTwo, 5);
+        givenAvailableProduct(productIdThree, 3);
         givenExistingCartWith(buyerId, products);
 
         service.chooseProducts(new ChooseProductsCommand(buyerId, products));
@@ -71,6 +76,33 @@ public class CartApplicationServiceTest {
                 .containsProduct(productIdOne, 1)
                 .containsProduct(productIdTwo, 5)
                 .containsProduct(productIdThree, 3);
+    }
+
+    @Test
+    void shouldBookChosenProducts() {
+        UUID buyerId = randomBuyerId();
+        UUID productIdOne = randomProductId();
+        UUID productIdTwo = randomProductId();
+        Map<UUID, Integer> products = ImmutableMap.of(
+                productIdOne, 1,
+                productIdTwo, 5
+        );
+        givenAvailableProduct(productIdOne, 1);
+        givenAvailableProduct(productIdTwo, 5);
+        givenExistingCartWith(buyerId, products);
+
+        service.chooseProducts(new ChooseProductsCommand(buyerId, products));
+
+        thenProductWasBooked(productIdOne, 1);
+        thenProductWasBooked(productIdTwo, 5);
+    }
+
+    private void thenProductWasBooked(UUID productId, int amount) {
+        BDDMockito.then(productManagementService).should().book(productId, amount);
+    }
+
+    private void givenAvailableProduct(UUID productId, int amount) {
+        BDDMockito.given(productManagementService.book(productId, amount)).willReturn(true);
     }
 
     private Order thenOrderSaved() {

@@ -2,16 +2,19 @@ package com.smalaca.pruchase.application.cart;
 
 import com.smalaca.pruchase.domain.cart.Cart;
 import com.smalaca.pruchase.domain.cart.CartRepository;
+import com.smalaca.pruchase.domain.cart.ProductManagementService;
 import com.smalaca.pruchase.domain.order.Order;
 import com.smalaca.pruchase.domain.order.OrderRepository;
 
 class CartApplicationService {
     private final CartRepository cartRepository;
     private final OrderRepository orderRepository;
+    private final ProductManagementService productManagementService;
 
-    CartApplicationService(CartRepository cartRepository, OrderRepository orderRepository) {
+    CartApplicationService(CartRepository cartRepository, OrderRepository orderRepository, ProductManagementService productManagementService) {
         this.cartRepository = cartRepository;
         this.orderRepository = orderRepository;
+        this.productManagementService = productManagementService;
     }
 
     void chooseProducts(ChooseProductsCommand command) {
