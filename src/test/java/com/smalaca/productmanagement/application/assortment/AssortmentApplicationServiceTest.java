@@ -5,6 +5,7 @@ import com.smalaca.productmanagement.domain.assortment.AssortmentRepository;
 import com.smalaca.productmanagement.domain.assortment.AssortmentTestFactory;
 import net.datafaker.Faker;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 import org.mockito.ArgumentCaptor;
 import org.mockito.BDDMockito;
 import org.mockito.Mockito;
@@ -12,12 +13,26 @@ import org.mockito.Mockito;
 import java.util.UUID;
 
 import static com.smalaca.productmanagement.domain.assortment.AssortmentAssertion.assertAssertion;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class AssortmentApplicationServiceTest {
     private static final Faker FAKER = new Faker();
 
     private final AssortmentRepository assortmentRepository = Mockito.mock(AssortmentRepository.class);
     private final AssortmentApplicationService service = new AssortmentApplicationService(assortmentRepository);
+
+    @Test
+    void shouldRecognizePriceIsNotGreaterThanZero() {
+        UUID sellerId = randomSellerId();
+        String productCode = randomProductCode();
+        String productName = randomProductName();
+        AddProductCommand command = new AddProductCommand(sellerId, productCode, productName, -13);
+        givenExistingAssortmentFor(sellerId);
+
+        Executable actual = () -> service.addProduct(command);
+
+        assertThrows(RuntimeException.class, actual);
+    }
 
     @Test
     void shouldAddProductToAssortment() {
