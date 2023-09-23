@@ -6,7 +6,9 @@ import com.smalaca.pruchase.domain.cart.CartRepository;
 import com.smalaca.pruchase.domain.order.Order;
 import com.smalaca.pruchase.domain.order.OrderAssertion;
 import com.smalaca.pruchase.domain.order.OrderRepository;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 import org.mockito.ArgumentCaptor;
 import org.mockito.BDDMockito;
 import org.mockito.Mockito;
@@ -14,12 +16,25 @@ import org.mockito.Mockito;
 import java.util.Map;
 import java.util.UUID;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 
 public class CartApplicationServiceTest {
     private final CartRepository cartRepository = Mockito.mock(CartRepository.class);
     private final OrderRepository orderRepository = Mockito.mock(OrderRepository.class);
     private final CartApplicationService service = new CartApplicationService(cartRepository, orderRepository);
+
+    @Test
+    void shouldRecognizeTheAmountOfProductIsNotGreaterThanZeroWhenChoosingProducts() {
+        UUID buyerId = randomBuyerId();
+        Map<UUID, Integer> products = ImmutableMap.of(randomProductId(), -42);
+        givenExistingCart(buyerId);
+
+        Executable executable = () -> service.chooseProducts(new ChooseProductsCommand(buyerId, products));
+
+        RuntimeException actual = assertThrows(RuntimeException.class, executable);
+        Assertions.assertThat(actual).hasMessage("Amount must be greater than zero.");
+    }
 
     @Test
     void shouldChooseProductsFromCart() {
