@@ -24,17 +24,24 @@ public class CartApplicationServiceTest {
     @Test
     void shouldChooseProductsFromCart() {
         UUID buyerId = randomBuyerId();
+        UUID productIdOne = randomProductId();
+        UUID productIdTwo = randomProductId();
+        UUID productIdThree = randomProductId();
         Map<UUID, Integer> products = ImmutableMap.of(
-                randomProductId(), 1,
-                randomProductId(), 5,
-                randomProductId(), 3
+                productIdOne, 1,
+                productIdTwo, 5,
+                productIdThree, 3
         );
         givenExistingCart(buyerId);
 
         service.chooseProducts(new ChooseProductsCommand(buyerId, products));
 
         OrderAssertion.assertOder(thenOrderSaved())
-                .hasOrderNumber();
+                .hasOrderNumber()
+                .hasProducts(3)
+                .containsProduct(productIdOne, 1)
+                .containsProduct(productIdTwo, 5)
+                .containsProduct(productIdThree, 3);
     }
 
     private Order thenOrderSaved() {
