@@ -6,6 +6,7 @@ import com.smalaca.pruchase.domain.cart.CartRepository;
 import com.smalaca.pruchase.domain.order.Order;
 import com.smalaca.pruchase.domain.order.OrderRepository;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.BDDMockito;
 import org.mockito.Mockito;
 
@@ -31,7 +32,13 @@ public class CartApplicationServiceTest {
 
         service.chooseProducts(new ChooseProductsCommand(buyerId, products));
 
-        BDDMockito.then(orderRepository).should().save(any(Order.class));
+        thenOrderSaved();
+    }
+
+    private Order thenOrderSaved() {
+        ArgumentCaptor<Order> captor = ArgumentCaptor.forClass(Order.class);
+        BDDMockito.then(orderRepository).should().save(captor.capture());
+        return captor.getValue();
     }
 
     @Test
