@@ -2,12 +2,15 @@ package com.smalaca.productmanagement.application.assortment;
 
 import com.smalaca.productmanagement.domain.assortment.Assortment;
 import com.smalaca.productmanagement.domain.assortment.AssortmentRepository;
+import com.smalaca.productmanagement.domain.assortment.ProductValidationService;
 
 class AssortmentApplicationService {
     private final AssortmentRepository assortmentRepository;
+    private final ProductValidationService productValidationService;
 
-    AssortmentApplicationService(AssortmentRepository assortmentRepository) {
+    AssortmentApplicationService(AssortmentRepository assortmentRepository, ProductValidationService productValidationService) {
         this.assortmentRepository = assortmentRepository;
+        this.productValidationService = productValidationService;
     }
 
     void addProduct(AddProductCommand command) {

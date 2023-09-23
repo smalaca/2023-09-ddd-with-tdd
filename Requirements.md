@@ -8,6 +8,7 @@
     Dane:
     - Nazwa Produktu
     - Cena -> musi być większa niż 0
+    - Produkt musi być możliwy do sprzedaży -> ProductValidationService:REST:GET:validate
 
 
 

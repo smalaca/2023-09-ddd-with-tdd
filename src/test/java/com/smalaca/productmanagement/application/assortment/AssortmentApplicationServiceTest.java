@@ -3,6 +3,7 @@ package com.smalaca.productmanagement.application.assortment;
 import com.smalaca.productmanagement.domain.assortment.Assortment;
 import com.smalaca.productmanagement.domain.assortment.AssortmentRepository;
 import com.smalaca.productmanagement.domain.assortment.AssortmentTestFactory;
+import com.smalaca.productmanagement.domain.assortment.ProductValidationService;
 import net.datafaker.Faker;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -20,12 +21,14 @@ class AssortmentApplicationServiceTest {
     private static final Faker FAKER = new Faker();
 
     private final AssortmentRepository assortmentRepository = Mockito.mock(AssortmentRepository.class);
-    private final AssortmentApplicationService service = new AssortmentApplicationService(assortmentRepository);
+    private final ProductValidationService productValidationService = Mockito.mock(ProductValidationService.class);
+    private final AssortmentApplicationService service = new AssortmentApplicationService(
+            assortmentRepository, productValidationService);
 
     @Test
     void shouldRecognizePriceIsNotGreaterThanZero() {
         UUID sellerId = randomSellerId();
-        String productCode = randomProductCode();
+        String productCode = givenValidProductCode();
         String productName = randomProductName();
         AddProductCommand command = new AddProductCommand(sellerId, productCode, productName, -13);
         givenExistingAssortmentFor(sellerId);
@@ -39,7 +42,7 @@ class AssortmentApplicationServiceTest {
     @Test
     void shouldAddProductToAssortment() {
         UUID sellerId = randomSellerId();
-        String productCode = randomProductCode();
+        String productCode = givenValidProductCode();
         String productName = randomProductName();
         AddProductCommand command = new AddProductCommand(sellerId, productCode, productName, 123);
         givenExistingAssortmentFor(sellerId);
@@ -49,6 +52,12 @@ class AssortmentApplicationServiceTest {
         assertAssertion(thenAssortmentSaved())
                 .hasSellerId(sellerId)
                 .containsProduct(productCode, productName, 123);
+    }
+
+    private String givenValidProductCode() {
+        String productCode = randomProductCode();
+        BDDMockito.given(productValidationService.isValid(productCode)).willReturn(true);
+        return productCode;
     }
 
     private Assortment thenAssortmentSaved() {
