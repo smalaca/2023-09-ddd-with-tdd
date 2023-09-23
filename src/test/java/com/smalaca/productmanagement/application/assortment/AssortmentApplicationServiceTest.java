@@ -10,14 +10,16 @@ import org.mockito.Mockito;
 import java.util.UUID;
 
 class AssortmentApplicationServiceTest {
+    private static final Faker FAKER = new Faker();
+
     private final AssortmentRepository assortmentRepository = Mockito.mock(AssortmentRepository.class);
     private final AssortmentApplicationService service = new AssortmentApplicationService(assortmentRepository);
 
     @Test
     void shouldAddProductToAssortment() {
         UUID sellerId = UUID.randomUUID();
-        String productCode = new Faker().lorem().word();
-        String productName = new Faker().lorem().word();
+        String productCode = FAKER.lorem().word();
+        String productName = FAKER.lorem().word();
         AddProductCommand command = new AddProductCommand(sellerId, productCode, productName);
         Assortment assortment = givenExistingAssortmentFor(sellerId);
 
