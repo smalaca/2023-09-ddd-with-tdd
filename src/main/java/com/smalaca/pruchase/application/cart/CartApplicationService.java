@@ -21,4 +21,7 @@ class CartApplicationService {
 
         orderRepository.save(order);
     }
+
+    void addProduct(AddProductCommand command) {
+    }
 }
