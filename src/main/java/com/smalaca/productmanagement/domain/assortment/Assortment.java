@@ -13,7 +13,11 @@ public class Assortment {
         this.sellerId = sellerId;
     }
 
-    public void addProduct(AddProductDto dto) {
+    public void addProduct(AddProductDto dto, ProductValidationService productValidationService) {
+        if (!productValidationService.isValid(dto.code())) {
+            throw new ProductException(dto.code());
+        }
+
         products.add(Product.product(dto.code(), dto.name(), dto.price()));
     }
 }

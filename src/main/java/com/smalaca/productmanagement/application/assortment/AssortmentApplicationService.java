@@ -20,7 +20,7 @@ class AssortmentApplicationService {
         Assortment assortment = assortmentRepository.find(command.sellerId());
 
         // wywołanie metody na domenie - 1
-        assortment.addProduct(command.asDto());
+        assortment.addProduct(command.asDto(), productValidationService);
 
         // zapis zmian -> 1 ... *
         assortmentRepository.save(assortment);
