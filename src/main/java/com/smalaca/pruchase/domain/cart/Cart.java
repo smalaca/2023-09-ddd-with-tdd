@@ -13,10 +13,15 @@ public class Cart {
         this.products = products;
     }
 
-    public Order chooseProducts(Map<UUID, Integer> products) {
+    public Order chooseProducts(Map<UUID, Integer> products, ProductManagementService productManagementService) {
         if (isAnyNotPresent(products)) {
             throw new ProductException();
         }
+
+        for (Map.Entry<UUID, Integer> choice : products.entrySet()) {
+            productManagementService.book(choice.getKey(), choice.getValue());
+        }
+
 
         Order.Builder builder = new Order.Builder();
         products.forEach(builder::addProduct);

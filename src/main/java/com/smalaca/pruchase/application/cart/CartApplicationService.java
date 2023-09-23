@@ -20,7 +20,7 @@ class CartApplicationService {
     void chooseProducts(ChooseProductsCommand command) {
         Cart cart = cartRepository.find(command.buyerId());
 
-        Order order = cart.chooseProducts(command.products());
+        Order order = cart.chooseProducts(command.products(), productManagementService);
 
         orderRepository.save(order);
     }
