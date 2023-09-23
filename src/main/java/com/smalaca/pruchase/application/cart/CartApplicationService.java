@@ -29,6 +29,8 @@ class CartApplicationService {
     }
 
     void removeProduct(RemoveProductCommand command) {
+        Cart cart = cartRepository.find(command.buyerId());
 
+        cartRepository.save(cart);
     }
 }
