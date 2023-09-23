@@ -10,6 +10,8 @@ import org.mockito.Mockito;
 
 import java.util.UUID;
 
+import static com.smalaca.productmanagement.domain.assortment.AssortmentAssertion.assertAssertion;
+
 class AssortmentApplicationServiceTest {
     private static final Faker FAKER = new Faker();
 
@@ -19,13 +21,17 @@ class AssortmentApplicationServiceTest {
     @Test
     void shouldAddProductToAssortment() {
         UUID sellerId = randomSellerId();
-        AddProductCommand command = new AddProductCommand(sellerId, randomProductCode(), randomProductName());
+        String productCode = randomProductCode();
+        String productName = randomProductName();
+        AddProductCommand command = new AddProductCommand(sellerId, productCode, productName);
         givenExistingAssortmentFor(sellerId);
 
         service.addProduct(command);
 
-        Assortment actual = thenAssortmentSaved();
-        // sprawdź czy produkt dodany
+        assertAssertion(thenAssortmentSaved())
+                .hasSellerId(sellerId)
+//                .containsProduct(productCode, productName)
+        ;
     }
 
     private Assortment thenAssortmentSaved() {
