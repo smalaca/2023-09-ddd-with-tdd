@@ -21,10 +21,11 @@ public class AssortmentAssertion {
         return this;
     }
 
-    public AssortmentAssertion containsProduct(String expectedProductCode, String expectedProductName) {
+    public AssortmentAssertion containsProduct(String expectedProductCode, String expectedProductName, int price) {
         Assertions.assertThat(actual).extracting("products").satisfies(actualProducts -> {
             List actualProductsList = (List) actualProducts;
-            Assertions.assertThat(actualProductsList).contains(new Product(expectedProductCode, expectedProductName));
+            Product product = Product.product(expectedProductCode, expectedProductName, price);
+            Assertions.assertThat(actualProductsList).contains(product);
         });
         return this;
     }

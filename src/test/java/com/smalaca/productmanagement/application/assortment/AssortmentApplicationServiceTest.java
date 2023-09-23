@@ -24,14 +24,14 @@ class AssortmentApplicationServiceTest {
         UUID sellerId = randomSellerId();
         String productCode = randomProductCode();
         String productName = randomProductName();
-        AddProductCommand command = new AddProductCommand(sellerId, productCode, productName);
+        AddProductCommand command = new AddProductCommand(sellerId, productCode, productName, 123);
         givenExistingAssortmentFor(sellerId);
 
         service.addProduct(command);
 
         assertAssertion(thenAssortmentSaved())
                 .hasSellerId(sellerId)
-                .containsProduct(productCode, productName);
+                .containsProduct(productCode, productName, 123);
     }
 
     private Assortment thenAssortmentSaved() {

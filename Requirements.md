@@ -7,6 +7,7 @@
     - Kod Sprzedawcy -> Asortyment
     Dane:
     - Nazwa Produktu
+    - Cena -> musi być większa niż 0
 
 
 
