@@ -2,6 +2,7 @@ package com.smalaca.productmanagement.application.assortment;
 
 import com.smalaca.productmanagement.domain.assortment.Assortment;
 import com.smalaca.productmanagement.domain.assortment.AssortmentRepository;
+import com.smalaca.productmanagement.domain.assortment.AssortmentTestFactory;
 import net.datafaker.Faker;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -53,6 +54,6 @@ class AssortmentApplicationServiceTest {
     }
 
     private void givenExistingAssortmentFor(UUID sellerId) {
-        BDDMockito.given(assortmentRepository.find(sellerId)).willReturn(new Assortment(sellerId));
+        BDDMockito.given(assortmentRepository.find(sellerId)).willReturn(AssortmentTestFactory.create(sellerId));
     }
 }
