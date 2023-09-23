@@ -79,6 +79,24 @@ public class CartApplicationServiceTest {
     }
 
     @Test
+    void shouldRecognizeNotAvailableProducts() {
+        UUID buyerId = randomBuyerId();
+        UUID productIdOne = randomProductId();
+        Map<UUID, Integer> products = ImmutableMap.of(productIdOne, 1);
+        givenNotAvailableProduct(productIdOne, 1);
+        givenExistingCartWith(buyerId, products);
+
+        Executable executable = () -> service.chooseProducts(new ChooseProductsCommand(buyerId, products));
+
+        RuntimeException actual = assertThrows(RuntimeException.class, executable);
+        Assertions.assertThat(actual).hasMessage("Product: " + productIdOne + " is not available");
+    }
+
+    private void givenNotAvailableProduct(UUID productId, int amount) {
+        BDDMockito.given(productManagementService.book(productId, amount)).willReturn(false);
+    }
+
+    @Test
     void shouldBookChosenProducts() {
         UUID buyerId = randomBuyerId();
         UUID productIdOne = randomProductId();
