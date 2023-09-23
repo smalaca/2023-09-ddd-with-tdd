@@ -4,6 +4,7 @@ import com.smalaca.productmanagement.domain.assortment.Assortment;
 import com.smalaca.productmanagement.domain.assortment.AssortmentRepository;
 import com.smalaca.productmanagement.domain.assortment.AssortmentTestFactory;
 import net.datafaker.Faker;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 import org.mockito.ArgumentCaptor;
@@ -31,7 +32,8 @@ class AssortmentApplicationServiceTest {
 
         Executable actual = () -> service.addProduct(command);
 
-        assertThrows(RuntimeException.class, actual);
+        RuntimeException actualException = assertThrows(RuntimeException.class, actual);
+        Assertions.assertThat(actualException).hasMessage("Price -13 is invalid");
     }
 
     @Test
