@@ -8,14 +8,14 @@ import java.util.UUID;
 @EqualsAndHashCode
 class OrderItem {
     private final UUID productId;
-    private final int productAmount;
+    private final Amount amount;
 
-    private OrderItem(UUID productId, int productAmount) {
+    private OrderItem(UUID productId, Amount amount) {
         this.productId = productId;
-        this.productAmount = productAmount;
+        this.amount = amount;
     }
 
     static OrderItem create(UUID productId, int amount) {
-        return new OrderItem(productId, amount);
+        return new OrderItem(productId, Amount.amount(amount));
     }
 }
