@@ -7,14 +7,9 @@ import lombok.EqualsAndHashCode;
 class Product {
     private final String code;
     private final String name;
-    private int price;
+    private final int price;
 
-    Product(String code, String name) {
-        this.code = code;
-        this.name = name;
-    }
-
-    Product(String productCode, String productName, int price) {
+    private Product(String productCode, String productName, int price) {
         code = productCode;
         name = productName;
         this.price = price;
