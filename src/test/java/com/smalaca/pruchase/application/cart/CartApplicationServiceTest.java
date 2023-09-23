@@ -49,7 +49,7 @@ public class CartApplicationServiceTest {
         UUID buyerId = randomBuyerId();
         givenExistingCart(buyerId);
 
-        service.removeProduct(new RemoveProductCommand(buyerId, randomProductId(), 42));
+        service.removeProduct(new RemoveProductCommand(buyerId, randomProductId()));
 
         BDDMockito.then(cartRepository).should().save(any(Cart.class));
     }

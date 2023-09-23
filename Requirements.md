@@ -19,6 +19,7 @@
     - Id Kupującego -> Koszyk
     Dane:
     - Wybrane Produkty: Kod Produktu + Ilość
+    - Numer Zamówienia = String
 
 3. Dodawanie produktów do Koszyka
     Zmienia się: Koszyk
