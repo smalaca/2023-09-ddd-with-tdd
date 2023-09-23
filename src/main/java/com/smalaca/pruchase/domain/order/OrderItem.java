@@ -10,7 +10,7 @@ class OrderItem {
     private final UUID productId;
     private final int productAmount;
 
-    OrderItem(UUID productId, int productAmount) {
+    private OrderItem(UUID productId, int productAmount) {
         this.productId = productId;
         this.productAmount = productAmount;
     }

@@ -21,7 +21,7 @@ public class Order {
         }
 
         public void addProduct(UUID productId, Integer amount) {
-            items.add(new OrderItem(productId, amount));
+            items.add(OrderItem.create(productId, amount));
         }
     }
 }
