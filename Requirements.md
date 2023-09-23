@@ -37,4 +37,4 @@
     Jak to zidentyfikować:
     - Id Kupującego -> Koszyk
     Dane:
-    - Kod Produktu
+    - Kod Produktu - Produkt musi istnieć w koszyku
