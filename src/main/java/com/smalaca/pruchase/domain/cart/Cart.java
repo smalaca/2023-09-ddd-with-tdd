@@ -18,13 +18,14 @@ public class Cart {
             throw new ProductException();
         }
 
-        for (Map.Entry<UUID, Integer> choice : products.entrySet()) {
-            productManagementService.book(choice.getKey(), choice.getValue());
-        }
-
-
         Order.Builder builder = new Order.Builder();
         products.forEach(builder::addProduct);
+
+        for (Map.Entry<UUID, Integer> choice : products.entrySet()) {
+            if (!productManagementService.book(choice.getKey(), choice.getValue())) {
+                throw ProductException.notAvailable(choice.getKey());
+            }
+        }
 
         return builder.build();
     }
