@@ -11,7 +11,11 @@ class Price {
         this.value = value;
     }
 
+    // Factory
     static Price price(int value) {
+        if (value < 1) {
+            throw new PriceException();
+        }
         return new Price(value);
     }
 }
