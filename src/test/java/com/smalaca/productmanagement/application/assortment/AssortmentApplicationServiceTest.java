@@ -4,6 +4,7 @@ import com.smalaca.productmanagement.domain.assortment.Assortment;
 import com.smalaca.productmanagement.domain.assortment.AssortmentRepository;
 import net.datafaker.Faker;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.BDDMockito;
 import org.mockito.Mockito;
 
@@ -19,12 +20,18 @@ class AssortmentApplicationServiceTest {
     void shouldAddProductToAssortment() {
         UUID sellerId = randomSellerId();
         AddProductCommand command = new AddProductCommand(sellerId, randomProductCode(), randomProductName());
-        Assortment assortment = givenExistingAssortmentFor(sellerId);
+        givenExistingAssortmentFor(sellerId);
 
         service.addProduct(command);
 
-        BDDMockito.then(assortmentRepository).should().save(assortment);
+        Assortment actual = thenAssortmentSaved();
         // sprawdź czy produkt dodany
+    }
+
+    private Assortment thenAssortmentSaved() {
+        ArgumentCaptor<Assortment> captor = ArgumentCaptor.forClass(Assortment.class);
+        BDDMockito.then(assortmentRepository).should().save(captor.capture());
+        return captor.getValue();
     }
 
     private String randomProductName() {
@@ -39,9 +46,7 @@ class AssortmentApplicationServiceTest {
         return UUID.randomUUID();
     }
 
-    private Assortment givenExistingAssortmentFor(UUID sellerId) {
-        Assortment assortment = new Assortment();
-        BDDMockito.given(assortmentRepository.find(sellerId)).willReturn(assortment);
-        return assortment;
+    private void givenExistingAssortmentFor(UUID sellerId) {
+        BDDMockito.given(assortmentRepository.find(sellerId)).willReturn(new Assortment());
     }
 }
